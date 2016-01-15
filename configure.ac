@@ -225,6 +225,11 @@ if (test "${enable_external_ell}" = "yes"); then
 fi
 AM_CONDITIONAL(EXTERNAL_ELL, test "${enable_external_ell}" = "yes")
 
+AC_ARG_ENABLE(android_wakelock, AC_HELP_STRING([--enable-android-wakelock],
+				[enable Enable support for Android wakelocks]),
+					[enable_android_wakelock=${enableval}])
+AM_CONDITIONAL(ANDROID_WAKELOCK, test "${enable_android_wakelock}" = "yes")
+
 AC_ARG_ENABLE(datafiles, AC_HELP_STRING([--disable-datafiles],
 			[do not install configuration and data files]),
 					[enable_datafiles=${enableval}])

@@ -701,6 +701,11 @@ builtin_sources += plugins/push-notification.c
 builtin_modules += allowed_apns
 builtin_sources += plugins/allowed-apns.c
 
+if ANDROID_WAKELOCK
+builtin_modules += android_wakelock
+builtin_sources += plugins/android-wakelock.c
+endif
+
 sbin_PROGRAMS = src/ofonod
 
 src_ofonod_SOURCES = $(builtin_sources) $(gatchat_sources) \
