@@ -79,7 +79,7 @@ pkginclude_HEADERS = include/log.h include/plugin.h include/history.h \
 			include/cdma-provision.h include/handsfree.h \
 			include/handsfree-audio.h include/siri.h \
 			include/netmon.h include/lte.h include/ims.h \
-			include/storage.h
+			include/storage.h include/wakelock.h
 
 nodist_pkginclude_HEADERS = include/version.h
 
@@ -731,7 +731,7 @@ src_ofonod_SOURCES = $(builtin_sources) $(gatchat_sources) \
 			src/handsfree-audio.c src/bluetooth.h \
 			src/hfp.h src/siri.c \
 			src/netmon.c src/lte.c src/ims.c \
-			src/netmonagent.c src/netmonagent.h
+			src/netmonagent.c src/netmonagent.h src/wakelock.c
 
 src_ofonod_LDADD = gdbus/libgdbus-internal.la $(builtin_libadd) $(ell_ldadd) \
 			@GLIB_LIBS@ @DBUS_LIBS@ -ldl

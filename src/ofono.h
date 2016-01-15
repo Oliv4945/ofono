@@ -569,3 +569,6 @@ ofono_bool_t __ofono_private_network_request(ofono_private_network_cb_t cb,
 #include <ofono/netmon.h>
 #include <ofono/lte.h>
 #include <ofono/ims.h>
+
+int __ofono_wakelock_init(void);
+void __ofono_wakelock_cleanup(void);
