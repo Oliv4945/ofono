@@ -38,6 +38,7 @@
 #include "simutil.h"
 #include "smsutil.h"
 #include "storage.h"
+#include "wakelock.h"
 
 #define MAX_VOICE_CALLS 16
 
@@ -3574,6 +3575,13 @@ static void emulator_atd_cb(struct ofono_emulator *em,
 	size_t len;
 	char number[OFONO_MAX_PHONE_NUMBER_LENGTH + 1];
 	struct ofono_error result;
+
+	/*
+	 * If the device supports wakelocks, acquire one to
+	 * ensure the device is kept awake after being woken
+	 * by an incoming request from the HFP HF.
+	 */
+	wakelock_system_lock();
 
 	switch (ofono_emulator_request_get_type(req)) {
 	case OFONO_EMULATOR_REQUEST_TYPE_SET:
