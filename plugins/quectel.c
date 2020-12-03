@@ -64,7 +64,7 @@ static const char *cpin_prefix[] = { "+CPIN:", NULL };
 static const char *cbc_prefix[] = { "+CBC:", NULL };
 static const char *qinistat_prefix[] = { "+QINISTAT:", NULL };
 static const char *cgmm_prefix[] = { "UC15", "Quectel_M95", "Quectel_MC60",
-					"EC21", NULL };
+					"EC21", "EG25", NULL };
 static const char *none_prefix[] = { NULL };
 
 static const uint8_t gsm0710_terminate[] = {
@@ -84,6 +84,7 @@ enum quectel_model {
 	QUECTEL_M95,
 	QUECTEL_MC60,
 	QUECTEL_EC21,
+	QUECTEL_EG25,
 };
 
 struct quectel_data {
@@ -543,6 +544,7 @@ static void dbus_hw_enable(struct ofono_modem *modem)
 	switch (data->model) {
 	case QUECTEL_UC15:
 	case QUECTEL_EC21:
+	case QUECTEL_EG25:
 		g_at_chat_register(data->aux, "+QIND",  qind_notify, FALSE, hw,
 					NULL);
 		break;
@@ -588,6 +590,7 @@ static void qinistat_cb(gboolean ok, GAtResult *result, gpointer user_data)
 	switch (data->model) {
 	case QUECTEL_UC15:
 	case QUECTEL_EC21:
+	case QUECTEL_EG25:
 		/* UC15 uses a bitmap of 1 + 2 + 4 = 7 */
 		ready = 7;
 		break;
@@ -1061,6 +1064,10 @@ static void cgmm_cb(int ok, GAtResult *result, void *user_data)
 		DBG("%p model EC21", modem);
 		data->vendor = OFONO_VENDOR_QUECTEL_EC2X;
 		data->model = QUECTEL_EC21;
+	} else if (strcmp(model, "EG25") == 0) {
+		DBG("%p model EG25", modem);
+		data->vendor = OFONO_VENDOR_QUECTEL_EC2X;
+		data->model = QUECTEL_EG25;
 	} else {
 		ofono_warn("%p unknown model: '%s'", modem, model);
 		data->vendor = OFONO_VENDOR_QUECTEL;
@@ -1315,7 +1322,7 @@ static void quectel_post_sim(struct ofono_modem *modem)
 	ofono_phonebook_create(modem, data->vendor, "atmodem", data->aux);
 	ofono_call_volume_create(modem, data->vendor, "atmodem", data->aux);
 
-	if (data->model == QUECTEL_EC21) {
+	if (data->model == QUECTEL_EC21 || data->model == QUECTEL_EG25) {
 		ofono_ussd_create(modem, data->vendor, "atmodem", data->aux);
 		ofono_lte_create(modem, data->vendor, "atmodem", data->aux);
 	}
