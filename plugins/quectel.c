@@ -66,6 +66,7 @@ static const char *qinistat_prefix[] = { "+QINISTAT:", NULL };
 static const char *cgmm_prefix[] = { "UC15", "Quectel_M95", "Quectel_MC60",
 					"EC21", "EG25", NULL };
 static const char *none_prefix[] = { NULL };
+static void cgmm_cb(int ok, GAtResult *result, void *user_data);
 
 static const uint8_t gsm0710_terminate[] = {
 	0xf9, /* open flag */
@@ -837,6 +838,9 @@ static int open_ttys(struct ofono_modem *modem)
 		return -EIO;
 	}
 
+	g_at_chat_send(data->modem, "AT+CGMM", cgmm_prefix, cgmm_cb, modem,
+			NULL);
+
 	setup_aux(modem);
 
 	return -EINPROGRESS;
@@ -1074,8 +1078,11 @@ static void cgmm_cb(int ok, GAtResult *result, void *user_data)
 		data->model = QUECTEL_UNKNOWN;
 	}
 
-	g_at_chat_send(data->uart, "AT+CMUX=0,0,5,127,10,3,30,10,2", NULL,
-			cmux_cb, modem, NULL);
+	if (data->uart) {
+		g_at_chat_send(data->uart, "AT+CMUX=0,0,5,127,10,3,30,10,2", NULL,
+				cmux_cb, modem, NULL);
+	}
+
 }
 
 static void ate_cb(int ok, GAtResult *result, void *user_data)
