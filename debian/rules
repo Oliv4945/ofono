@@ -7,6 +7,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- --libdir=/usr/lib \
                              --enable-bluetooth \
                              --enable-dundee \
+							 --enable-android-wakelock \
                              --with-systemdunitdir=/lib/systemd/system
 
 override_dh_strip:
