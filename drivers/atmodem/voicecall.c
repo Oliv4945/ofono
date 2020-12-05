@@ -281,6 +281,11 @@ static gboolean poll_clcc(gpointer user_data)
 	struct ofono_voicecall *vc = user_data;
 	struct voicecall_data *vd = ofono_voicecall_get_data(vc);
 
+	if (!(vd->flags & FLAG_NEED_CLIP)) {
+		DBG("Arrived at poll_clcc for call with CLIP already, bailing.");
+		return FALSE;
+	}
+
 	send_clcc(vd, vc);
 	vd->clcc_source = 0;
 
