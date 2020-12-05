@@ -1209,6 +1209,8 @@ static void voicecalls_emit_call_added(struct ofono_voicecall *vc,
 	DBusMessageIter dict;
 	const char *path;
 
+	wakelock_system_lock();
+
 	notify_emulator_call_status(vc);
 
 	path = __ofono_atom_get_path(vc->atom);
@@ -2392,6 +2394,8 @@ void ofono_voicecall_notify(struct ofono_voicecall *vc,
 	GSList *l;
 	struct voicecall *v = NULL;
 	struct ofono_call *newcall;
+
+	wakelock_system_lock();
 
 	DBG("Got a voicecall event, status: %s (%d), id: %u, number: %s"
 			" called_number: %s, called_name %s",
